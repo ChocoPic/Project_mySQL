@@ -3,11 +3,7 @@ import java.sql.*;
 
 /*
 프로젝트 내의 images 폴더 안에 있는 메뉴 이미지를
-db에 스타벅스 테이블- image 에 blob 으로 넣어주는 코드
-
-ex)./images/카페 아메리카노.jpg
-* 차이티는 용량이 커서 안들어감.
-이유는 모르겠는데 수동으로 넣으면 됨.
+db에 blob 으로 넣어주는 코드
 */
 
 public class SaveImages {
@@ -34,8 +30,8 @@ public class SaveImages {
     }
     private static void saveImage(Connection con, Statement st) throws SQLException {
 
-        String sql1 = "select * from 스타벅스;";
-        String sql2 = "update 스타벅스 set image=? where name=?;";
+        String sql1 = "select * from 브랜드명;";
+        String sql2 = "update 브랜드명 set image=? where name=?;";
         String img_path=null;
         String img_name=null;
 
