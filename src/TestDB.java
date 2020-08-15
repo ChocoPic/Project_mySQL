@@ -14,7 +14,7 @@ public class TestDB extends JFrame implements ActionListener {
 
     public TestDB() {
         Connection con = null;
-        String url = "jdbc:mysql://192.168.219.110/test_db?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true&useSSL=false";
+        String url = "jdbc:mysql://localhost:3306/test_db?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true&useSSL=false";
         String id = "menu_master";
         String password = "menu804";
         try {
