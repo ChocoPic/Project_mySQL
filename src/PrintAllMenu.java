@@ -12,12 +12,13 @@ public class PrintAllMenu extends JFrame implements ActionListener {
     private JButton button;
     private ResultSet rs = null;
     private Statement st = null;
-    private int id = 0; //'스타벅스'에서 출력할 메뉴의 id
-    private ArrayList<Integer> idList_coffee = new ArrayList<>();
-    private ArrayList<Integer> idList_noncoffee = new ArrayList<>();
 
-    private String sql_O = "select * from 스타벅스 where coffee='O';";
-    private String sql_X = "select * from 스타벅스 where coffee='X';";
+    private int id = 1; //출력할 메뉴의 id값
+    private static ArrayList<Integer> idList_coffee = new ArrayList<>();    //커피인 메뉴의 id가 저장될 arraylist
+    private static ArrayList<Integer> idList_noncoffee = new ArrayList<>(); //논커피인 메뉴의 id가 저장될 arraylist
+
+    private String sql_O = "select * from cafemenu where coffee='O';";
+    private String sql_X = "select * from cafemenu where coffee='X';";
 
     public PrintAllMenu() {
         Connection con = null;
@@ -56,24 +57,21 @@ public class PrintAllMenu extends JFrame implements ActionListener {
         setSize(400, 600);
         setVisible(true);
 
-        /*커피나 논커피인 경우에 리스트를 만든다.*/
+        /*커피나 논커피인 경우에 arraylist를 만든다.*/
         make_coffeeList(sql_O); //커피인경우
         //make_coffeeList(sql_X); //논커피인경우
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        /*1. 전체 메뉴*/
-        //showMenu(id);
-        /*2. 커피 or 3. 논커피*/
-        int menuID = idList_coffee.get(id);
-        showMenu(menuID);
-
-        id++;   //테스트를 위해 버튼을 누를 때마다 다음 메뉴가 출력되도록 함.
-
+    public void actionPerformed(ActionEvent e) {    //버튼을 클릭하면 메뉴를 보여준다
+        /*1. 전체 메뉴 중에서 보여주는 코드*/
+        showMenu(id);
+        /*2. 커피 or 3. 논커피 중 에서 보여주는 코드*/
+        /*int menuID = idList_coffee.get(id);
+        showMenu(menuID);*/
     }
 
-    private void make_coffeeList(String sql_coffee){    //커피 또는 논커피(sql 에 따라 바뀜) id가 저장된 Arraylist 를 생성
+    private void make_coffeeList(String sql_coffee){    //커피 또는 논커피의 id가 저장된 Arraylist 를 생성
         try{
             rs = st.executeQuery(sql_coffee);
             while(rs.next()){
@@ -84,15 +82,18 @@ public class PrintAllMenu extends JFrame implements ActionListener {
         }
     }
 
-    private void showMenu(int id) { //id에 해당하는 메뉴를 gui 에 띄움
-        String sql = "select * from 스타벅스 where id='"+id+"';";
+    private void showMenu(int id) { //id에 해당하는 메뉴를 gui에 띄움
+        String sql = "select * from cafemenu where id='"+id+"';";
         try {
             rs = st.executeQuery(sql);
             if (rs.next()) {
                 Blob b = rs.getBlob("image");   //DB에서 바이너리 데이터 얻어옴
                 img = new ImageIcon(b.getBytes(1, (int) b.length()));//바이너리 데이터를 이미지 포맷으로 변환
                 imageLabel.setIcon(img);    //이미지출력
-                textLabel.setText(rs.getString("name") + " " + rs.getString("price") + " " + rs.getString("coffee"));   //텍스트출력
+                textLabel.setText( rs.getString("brand") + " "
+                        + rs.getString("name") + " "
+                        + rs.getString("price") + " "
+                        + rs.getString("coffee"));   //텍스트출력
             }
         }catch (SQLException e){
 
